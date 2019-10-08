@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  web:
+    ports:
+      - 8080:8080
+    build: .
+    volumes:
+      - ./src:/usr/src/app/src
+    restart: unless_stopped
+    environment:
+      - REDIS_CLIENT=redis://redis
+
+  redis:
+    image: redis
+    expose:
+      - 6379
+    restart: unless-stopped
+
+  postgresql:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  dbdata:
